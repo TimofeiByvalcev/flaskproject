@@ -14,12 +14,30 @@ on:
   workflow_dispatch:
 
 jobs:
-  test_job:
+  linting:
+    name   : Linting
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
-
+      
+      - name: Setup Python3
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10.2'
+          
+      - name: Setup dependencies
+        run: |
+          pip install flake8
+          flake8 --version
+          
+      - name: Linting code
+        run : |
+          flake8 flaskapp.py
+      - name: Success linting
+        run : echo "Linting is successfull 
+          
+        
       - name: Print Hello message
         run : echo "Hello, world from TestJob"
      
@@ -30,15 +48,4 @@ jobs:
           echo "Application name: ${{ env.APPLICATION_NAME }}"
       - name: Current folder list
         run: ls -la
-          
-
-  test_job_2:
-    runs-on: ubuntu-latest
-    needs  : [test_job] 
-    
-    steps:
-      - name: Print Hello Message
-        run : echo "Hello World from TestJob2"
-     
-      - name: Printinhg Deployment package
-        run : echo "Deployment package is ${{ env.DEPLOY_PACKAGE_NAME }}"
+        
