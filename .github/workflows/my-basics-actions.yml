@@ -4,7 +4,6 @@ name: My-GitHubActions-Bascis
 env:
   APPLICATION_NAME    : "MyFlask"
   DEPLOY_PACKAGE_NAME : "flask-deploy-ver-${{ github.sha }}"
-  PYTHON_VERSION      : 3.10
 
 on:
   push:
@@ -25,7 +24,8 @@ jobs:
       - name: Setup Python3
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ env.PYTHON_VERSION}}
+          python-version: '3.10'
+          
       - name: Setup dependencies
         run: |
           pip install flake8
