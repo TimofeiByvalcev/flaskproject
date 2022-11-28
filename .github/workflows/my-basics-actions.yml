@@ -4,6 +4,7 @@ name: My-GitHubActions-Bascis
 env:
   APPLICATION_NAME    : "MyFlask"
   DEPLOY_PACKAGE_NAME : "flask-deploy-ver-${{ github.sha }}"
+  PYTHON_VERSION      : 3.10
 
 on:
   push:
@@ -14,12 +15,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  test_job:
+  linting:
+    name   : Linting
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
       
+      - name: Setup Python3
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION}}
+      - name: Setup dependencies
+        run: |
+          pip install flake8
+          flake8 --version
+          
       - name: Linting code
         run : |
           flake8 flaskapp.py
